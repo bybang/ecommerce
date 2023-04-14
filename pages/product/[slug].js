@@ -7,10 +7,19 @@ import {
   AiOutlineStar,
 } from "react-icons/ai";
 import { Product } from "../../components";
+import { useStateContext } from "../../context/StateContext";
 
 const ProductDetails = ({ product, products }) => {
   const { image, name, details, price } = product;
   const [index, setIndex] = useState(0);
+
+  const { qty, incQty, decQty, onAdd, setShowCart } = useStateContext();
+
+  const handleBuyNow = () => {
+    onAdd(product, qty);
+
+    setShowCart(true);
+  };
 
   return (
     <div>
@@ -29,6 +38,7 @@ const ProductDetails = ({ product, products }) => {
             {image.map((item, i) => (
               <img
                 onMouseEnter={() => setIndex(i)}
+                key={i}
                 src={urlFor(item)}
                 alt="item-preview"
                 className={
@@ -60,13 +70,11 @@ const ProductDetails = ({ product, products }) => {
           <div className="quantity">
             <h3>Quantity: </h3>
             <p className="quantity-desc">
-              <span onClick={() => {}} className="minus">
+              <span onClick={decQty} className="minus">
                 <AiOutlineMinus />
               </span>
-              <span onClick={() => {}} className="num">
-                0
-              </span>
-              <span onClick={() => {}} className="plus">
+              <span className="num">{qty}</span>
+              <span onClick={incQty} className="plus">
                 <AiOutlinePlus />
               </span>
             </p>
@@ -74,10 +82,14 @@ const ProductDetails = ({ product, products }) => {
 
           {/* Add to Cart / Buy now */}
           <div className="buttons">
-            <button onClick={() => {}} type="button" className="add-to-cart">
+            <button
+              onClick={() => onAdd(product, qty)}
+              type="button"
+              className="add-to-cart"
+            >
               Add to Cart
             </button>
-            <button onClick={() => {}} type="button" className="buy-now">
+            <button onClick={handleBuyNow} type="button" className="buy-now">
               Buy Now
             </button>
           </div>

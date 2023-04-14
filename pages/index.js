@@ -5,7 +5,7 @@ import { client } from "../lib/client";
 const Home = ({ products, bannerData }) => {
   return (
     <div>
-      <HeroBanner heroBanner={bannerData?.length && bannerData[0]} />
+      <HeroBanner heroBanner={bannerData} />
 
       <div className="products-heading">
         <h2>Best Selling Products</h2>
@@ -19,7 +19,7 @@ const Home = ({ products, bannerData }) => {
       </div>
 
       {/* Footer */}
-      <FooterBanner footerBanner={bannerData && bannerData[0]} />
+      <FooterBanner footerBanner={bannerData} />
     </div>
   );
 };
@@ -28,7 +28,7 @@ export const getServerSideProps = async () => {
   const query = `*[_type == "product"]`;
   const products = await client.fetch(query);
 
-  const bannerQuery = `*[_type == "banner"]`;
+  const bannerQuery = `*[_type == "banner"][1]`;
   const bannerData = await client.fetch(bannerQuery);
 
   return {
